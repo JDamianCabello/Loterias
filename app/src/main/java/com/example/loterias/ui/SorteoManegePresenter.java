@@ -30,9 +30,6 @@ public class SorteoManegePresenter implements SorteoManageContract.Presenter{
     }
 
     private boolean validaDate(Sorteo sorteo){
-        view.cleanDateEmptyError();
-        view.cleanFormatDateError();
-        view.clearRepeatDateError();
         if(validateDateEmty(sorteo.getFecha())){
             if(correctFormat(sorteo.getFecha())){
                 if(repeatDateAndLottery(sorteo)){
@@ -72,8 +69,8 @@ public class SorteoManegePresenter implements SorteoManageContract.Presenter{
     private boolean repeatDateAndLottery(Sorteo sorteo){
         for (Sorteo s : SorteoRepository.getInstance.getList()){
             if(s.getClass() == sorteo.getClass() && sorteo.getFecha().equals(s.getFecha()))
-                return false;
+                return true;
         }
-        return true;
+        return false;
     }
 }

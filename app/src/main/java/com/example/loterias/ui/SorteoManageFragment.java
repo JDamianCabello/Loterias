@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,9 @@ public class SorteoManageFragment extends Fragment implements SorteoManageContra
 
         if(getArguments()!= null){
             date.setText(((Sorteo)getArguments().getParcelable(Sorteo.Key)).getFecha());
+            spinner.setSelection(getSpinnerPosition((Sorteo) getArguments().getParcelable(Sorteo.Key)));
+            spinner.setEnabled(false);
+
         }
 
 
@@ -84,7 +88,6 @@ public class SorteoManageFragment extends Fragment implements SorteoManageContra
                     presenter.addSorteo(s);
                 }
                 else {
-                    spinner.setEnabled(false);
                     Sorteo s = getArguments().getParcelable(Sorteo.Key);
                     s.setFecha(date.getText().toString());
                     presenter.modifySorteo(s);
@@ -93,6 +96,16 @@ public class SorteoManageFragment extends Fragment implements SorteoManageContra
         });
 
 
+    }
+
+    private int getSpinnerPosition(Sorteo sorteo) {
+        if(sorteo instanceof Bonoloto)
+            return 0;
+        if(sorteo instanceof Euromillon)
+            return 1;
+        if(sorteo instanceof Primitiva)
+            return 2;
+        return -1;
     }
 
     @Override
